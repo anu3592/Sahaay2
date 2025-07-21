@@ -1,15 +1,18 @@
-# Use an official JDK base image
-FROM openjdk:17
+# 1. Use Maven image to build
+FROM maven:3.8.5-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Set the working directory
+# 2. Use smaller JDK image to run
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
-# Copy your jar file into the container
-COPY target/ticket-1.0-SNAPSHOT.jar app.jar
+# Copy the built jar from above stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Expose the port (change 9494 if needed)
-EXPOSE 9494
+# Expose the port your app runs on (e.g., 8080 or 9494)
+EXPOSE 8080
 
-# Run the jar file
+# Run the jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
