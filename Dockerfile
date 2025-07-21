@@ -1,13 +1,15 @@
-# Step 1: Build the app using Maven
-FROM maven:3.8.5-openjdk-17 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
+# Use an official JDK base image
+FROM openjdk:17
 
-# Step 2: Run the app with JDK
-FROM openjdk:17-jdk-slim
+# Set the working directory
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
 
-EXPOSE 8080
+# Copy your jar file into the container
+COPY target/ticket-1.0-SNAPSHOT.jar app.jar
+
+# Expose the port (change 9494 if needed)
+EXPOSE 9494
+
+# Run the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
