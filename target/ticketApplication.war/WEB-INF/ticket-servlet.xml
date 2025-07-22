@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this template
+-->
+
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            https://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context 
+                            http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                            http://www.springframework.org/schema/util
+                            http://www.springframework.org/schema/util/spring-util-4.0.xsd
+                            http://www.springframework.org/schema/mvc
+                            http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                            http://www.springframework.org/schema/task
+                            http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+    
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <mvc:annotation-driven />
+    
+    <task:annotation-driven />
+    
+    <context:component-scan base-package="com.ticketApplication" />
+    
+    <context:annotation-config />
+    
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="ds">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/ticketapplication"/>
+        <property name="username" value="root"/>
+        <property name="password" value="" />
+    </bean>
+    
+    <bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" name="sessionFactory">
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        
+        <property name="dataSource" ref="ds"/>
+        
+        <property name="annotatedClasses">
+            <list>
+                
+                <value>com.ticketApplication.entity.Ticket</value>
+                <value>com.ticketApplication.entity.Users</value>
+                <value>com.ticketApplication.entity.Authority</value>
+                <value>com.ticketApplication.entity.EscalationLogs</value>
+            </list>
+        </property>
+        
+        
+    </bean>
+    
+    <bean class="com.ticketApplication.DAO.TicketDao" name="ticketDao">
+        <property name="factory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean class="com.ticketApplication.service.TicketService" name="ticketService"/>
+    
+   
+
+    
+    <bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" name="transactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    
+    
+</beans>
