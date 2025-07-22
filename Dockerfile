@@ -1,8 +1,11 @@
-# Use official Tomcat image
-FROM tomcat:9-jdk17
+# Use official Tomcat 9 base image
+FROM tomcat:9.0.85-jdk17
 
-# Remove default webapps (optional but clean)
+# Remove default webapps
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy your WAR into Tomcat webapps
-COPY target/ticketApplication.war /usr/local/tomcat/webapps/ROOT.war
+# Copy WAR file to webapps
+COPY target/ticketApplication.war /usr/local/tomcat/webapps/ticketApplication.war
+
+# Expose port (Render auto detects it)
+EXPOSE 8080
