@@ -1,18 +1,8 @@
-# 1. Use Maven image to build
-FROM maven:3.8.5-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
+# Use official Tomcat image
+FROM tomcat:9-jdk17
 
-# 2. Use smaller JDK image to run
-FROM eclipse-temurin:17-jdk
-WORKDIR /app
+# Remove default webapps (optional but clean)
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy the built jar from above stage
-COPY --from=build /app/target/*.jar app.jar
-
-# Expose the port your app runs on (e.g., 8080 or 9494)
-EXPOSE 8080
-
-# Run the jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Copy your WAR into Tomcat webapps
+COPY target/ticketApplication.war /usr/local/tomcat/webapps/ROOT.war
