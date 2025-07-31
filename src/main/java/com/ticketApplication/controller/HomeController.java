@@ -40,7 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
-@CrossOrigin(origins= "http://localhost:5173/")
+@CrossOrigin(origins= "https://sahaay-eosin.vercel.app/")
 
 public class HomeController {
     
