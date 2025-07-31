@@ -48,7 +48,7 @@ public class TicketDao {
     @Transactional
     public void insert(Ticket ticket) {
         Session session = factory.getCurrentSession();
-
+        
         String category = ticket.getCategory();
         System.out.println(category);
         Query q2 = session.createQuery("from Authority where level=1 and department = :category order by no_of_ticket_assigned ASC");
