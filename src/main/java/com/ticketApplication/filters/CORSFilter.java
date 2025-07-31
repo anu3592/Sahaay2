@@ -7,11 +7,14 @@ package com.ticketApplication.filters;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Anurag
  */
+
+@Component
 public class CORSFilter implements Filter{
 
     @Override
@@ -26,10 +29,11 @@ public class CORSFilter implements Filter{
          HttpServletResponse res = (HttpServletResponse) response;
         
         // Set CORS headers
-        res.setHeader("Access-Control-Allow-Origin", "*"); // Allow all origins
+        res.setHeader("Access-Control-Allow-Origin", "https://sahaay-eosin.vercel.app"); // Allow all origins
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
         res.setHeader("Access-Control-Max-Age", "3600"); // Cache for 1 hour
+        res.setHeader("Access-Control-Allow-Credentials", "true");
 
         chain.doFilter(request, response);
     }
