@@ -22,6 +22,8 @@
             <param-value>/WEB-INF/ticket-servlet.xml</param-value>
         </init-param>
         
+        <load-on-startup>1</load-on-startup>
+        
         <multipart-config>
             <location>/</location>
             <max-file-size>20848820</max-file-size>
