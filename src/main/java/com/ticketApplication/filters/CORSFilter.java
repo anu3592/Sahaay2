@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
  * @author Anurag
  */
 
-@Component
 public class CORSFilter implements Filter{
 
     @Override
