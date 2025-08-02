@@ -29,7 +29,8 @@ public class CORSFilter implements Filter{
         
          HttpServletResponse res = (HttpServletResponse) response;
          HttpServletRequest req = (HttpServletRequest) request;
-        
+         
+        System.out.println("[CORSFilter] Triggered for: " + req.getRequestURI());
         // Set CORS headers
         res.setHeader("Access-Control-Allow-Origin", "https://sahaay-eosin.vercel.app"); // Allow all origins
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
