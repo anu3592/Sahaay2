@@ -81,6 +81,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this 
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
+<!--    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="https://sahaay-eosin.vercel.app"
+                     allowed-methods="GET,POST,PUT,DELETE,OPTIONS"
+                     allowed-headers="*"
+                     allow-credentials="true" />
+    </mvc:cors>-->
+
     
     
 </beans>
