@@ -20,11 +20,18 @@
             <scope>provided</scope>
         </dependency>-->
         
-        <dependency>
+        <!--        <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>10.0.0</version> <!-- or whatever value is set in ${jakartaee} -->
+            <version>10.0.0</version>  or whatever value is set in ${jakartaee} 
+        </dependency>-->
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
         </dependency>
+
         
         <!-- For JSON handling-->
         <dependency>
