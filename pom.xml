@@ -124,6 +124,6 @@
                 <version>3.3.2</version>
             </plugin>
         </plugins>
-        <finalName>ticketApplication.war</finalName>
+        <finalName>ticketApplication</finalName>
     </build>
 </project>
