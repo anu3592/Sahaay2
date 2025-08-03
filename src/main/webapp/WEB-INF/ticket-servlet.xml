@@ -39,7 +39,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this 
     
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="ds">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://ticketapplication_user:hIEpXefXBWis5IguwKCyMKHR99W9iu2a@dpg-d25dpis9c44c73d7jh5g-a.singapore-postgres.render.com/ticketapplication"/>
+        <property name="url" value="jdbc:postgresql://dpg-d25dpis9c44c73d7jh5g-a.singapore-postgres.render.com:5432/ticketapplication?user=ticketapplication_user&amp;password=hIEpXefXBWis5IguwKCyMKHR99W9iu2a"/>
         <property name="username" value="ticketapplication_user"/>
         <property name="password" value="hIEpXefXBWis5IguwKCyMKHR99W9iu2a" />
     </bean>

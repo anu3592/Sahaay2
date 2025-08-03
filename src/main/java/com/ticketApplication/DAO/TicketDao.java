@@ -9,7 +9,7 @@ import com.ticketApplication.entity.EscalationLogs;
 import com.ticketApplication.entity.Ticket;
 import com.ticketApplication.entity.Users;
 import jakarta.persistence.Query;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
