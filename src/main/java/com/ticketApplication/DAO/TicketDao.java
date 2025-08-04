@@ -48,7 +48,7 @@ public class TicketDao {
     @Transactional
     public void insert(Ticket ticket) {
         Session session = factory.getCurrentSession();
-        
+
         String category = ticket.getCategory();
         System.out.println(category);
         Query q2 = session.createQuery("from Authority where level=1 and department = :category order by no_of_ticket_assigned ASC");
@@ -135,95 +135,89 @@ public class TicketDao {
     public void escalateTable() {
         Session session = factory.getCurrentSession();
 
-        Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
+        //Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
+        Query q = session.createNativeQuery(
+                "SELECT * FROM tickets WHERE status = :status AND EXTRACT(EPOCH FROM (now() - created_at)) / 60 > 5",
+                Ticket.class
+        );
         q.setParameter("status", "pending");
 
         List<Ticket> tickets = q.getResultList();
-        
-        for(int i=0; i<tickets.size(); i++)
-        {
+
+        for (int i = 0; i < tickets.size(); i++) {
             long authorityId = tickets.get(i).getAssigned_to();
-            
+
             Authority authority = (Authority) session.load(Authority.class, authorityId);
-            
+
             int level = (int) authority.getLevel();
-            
-            if(level<3)
-            {
+
+            if (level < 3) {
                 System.out.println("inside level block---");
                 Query q2 = session.createQuery("from Authority where level>1 order by no_of_ticket_assigned ASC");
                 List<Authority> auth = q2.getResultList();
                 System.out.println("Authority ->");
                 System.out.println(auth);
-                
-                for(int j=0; j<auth.size(); j++)
-                {
-                    
+
+                for (int j = 0; j < auth.size(); j++) {
+
                     //System.out.println(auth.get(j).getDepartment()+" "+tickets.get(i).getCategory());
-                    if(auth.get(j).getDepartment().equalsIgnoreCase(tickets.get(i).getCategory()))
-                    {
+                    if (auth.get(j).getDepartment().equalsIgnoreCase(tickets.get(i).getCategory())) {
                         System.out.println("inside auth block----");
                         Query q3 = session.createQuery("update Ticket set assigned_to= :authId where id = :id");
                         q3.setParameter("authId", auth.get(j).getId());
                         q3.setParameter("id", tickets.get(i).getId());
-                        
+
                         q3.executeUpdate();
                         System.out.println("updated Successfully!");
                     }
                 }
-                
+
             }
-            
+
         }
 
         System.out.println(tickets);
 
     }
-    
+
     @Transactional
-    public void closeTicket(long id)
-    {
+    public void closeTicket(long id) {
         Session session = factory.getCurrentSession();
         Query q = session.createQuery("update Ticket set status = 'approved' where id =:id");
         q.setParameter("id", id);
         q.executeUpdate();
-        
+
     }
-    
+
     @Transactional
-    public void escalateTicketById(long id, EscalationLogs escalation_logs)
-    {
+    public void escalateTicketById(long id, EscalationLogs escalation_logs) {
         Session session = factory.getCurrentSession();
-        
+
         //Query q = session.createQuery("from ");
-        
         Ticket ticket = session.load(Ticket.class, id);
         long authorityId = ticket.getAssigned_to();
-        
+
         Authority auth = session.load(Authority.class, authorityId);
-        
+
         int level = auth.getLevel();
-        
-        if(level<3)
-        {
+
+        if (level < 3) {
             Query q = session.createQuery("from Authority where department =:department and level>1 order by no_of_ticket_assigned ASC");
             q.setParameter("department", auth.getDepartment());
-            List<Authority> authorities =  q.getResultList();
-            System.out.println("Escalated authorities-> "+authorities);
+            List<Authority> authorities = q.getResultList();
+            System.out.println("Escalated authorities-> " + authorities);
             Query q2 = session.createQuery("update Ticket set assigned_to = :firstAuthId where id=:id");
             q2.setParameter("firstAuthId", authorities.get(0).getId());
             q2.setParameter("id", id);
-            
+
             q2.executeUpdate();
-            
+
             escalation_logs.setTo_authority_id(authorities.get(0).getId());
-            System.out.println("final escalation_logs -> "+escalation_logs);
-            try{
-            session.save(escalation_logs);
-            session.flush();
-            }
-            catch(Exception e)
-            {
+            System.out.println("final escalation_logs -> " + escalation_logs);
+            try {
+                session.save(escalation_logs);
+                session.flush();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 //            Query q5 = session.createQuery("update escalation_logs setto_authority_id = :authorityId where ticket_id = ticketId");
@@ -231,169 +225,143 @@ public class TicketDao {
 //            q5.setParameter("ticketId", escalation_logs.getTicketId());
 //            
 //            q5.executeUpdate();
-            
-            int no_of_ticket_assigned = auth.getNo_of_ticket_assigned()-1;
-            
+
+            int no_of_ticket_assigned = auth.getNo_of_ticket_assigned() - 1;
+
             Query q3 = session.createQuery("update Authority set no_of_ticket_assigned= :no_of_ticket_assigned where id  = :id");
             q3.setParameter("no_of_ticket_assigned", no_of_ticket_assigned);
             q3.setParameter("id", authorityId);
-            
+
             q3.executeUpdate();
-            
-            
-            int no_of_ticket_assigned2 = authorities.get(0).getNo_of_ticket_assigned()+1;
+
+            int no_of_ticket_assigned2 = authorities.get(0).getNo_of_ticket_assigned() + 1;
             Query q4 = session.createQuery("update Authority set no_of_ticket_assigned = :no_of_ticket_assigned where id= :id");
             q4.setParameter("no_of_ticket_assigned", no_of_ticket_assigned2);
             q4.setParameter("id", authorities.get(0).getId());
-            
+
             q4.executeUpdate();
         }
-        
+
     }
-    
+
     @Transactional
-    public List<Authority> getAuthorityInfo(long id)
-    {
+    public List<Authority> getAuthorityInfo(long id) {
         Session session = factory.getCurrentSession();
-        
+
         Query q1 = session.createQuery("from EscalationLogs where ticketId = :ticketId");
         q1.setParameter("ticketId", id);
         List<EscalationLogs> escalation_logs = q1.getResultList();
         List<Authority> authorities = new ArrayList<Authority>();
-        
-        
-        if(!escalation_logs.isEmpty())
-        {
+
+        if (!escalation_logs.isEmpty()) {
             long id1 = escalation_logs.get(0).getFrom_authority_id();
             Authority authority1 = (Authority) session.get(Authority.class, id1);
-            
+
             long id2 = escalation_logs.get(0).getTo_authority_id();
             Authority authority2 = (Authority) session.get(Authority.class, id2);
-            System.out.println("Info authority -> "+authority1);
+            System.out.println("Info authority -> " + authority1);
             authorities.add(authority1);
             authorities.add(authority2);
             return authorities;
-        }
-        else{
+        } else {
             Ticket ticket = session.load(Ticket.class, id);
             long id3 = ticket.getAssigned_to();
-            
+
             Authority authority3 = (Authority) session.get(Authority.class, id3);
-            System.out.println("Info authority -> "+authority3);
+            System.out.println("Info authority -> " + authority3);
             authorities.add(authority3);
             return authorities;
         }
-        
-        
+
     }
-    
+
     @Transactional
-    public void updateComplaint(Ticket ticket)
-    {
+    public void updateComplaint(Ticket ticket) {
         Session session = factory.getCurrentSession();
-        
+
         boolean name = false;
         boolean title = false;
         boolean category = false;
         boolean phone = false;
         boolean address = false;
         boolean problemDesc = false;
-        
-        if(ticket.getName()!=null)
-        {
+
+        if (ticket.getName() != null) {
             name = true;
         }
-        if(ticket.getAddress()!=null)
-        {
+        if (ticket.getAddress() != null) {
             address = true;
         }
-        if(ticket.getCategory()!=null)
-        {
+        if (ticket.getCategory() != null) {
             category = true;
         }
-        if(ticket.getPhone()!=null)
-        {
+        if (ticket.getPhone() != null) {
             phone = true;
         }
-        if(ticket.getProblemDesc()!=null)
-        {
+        if (ticket.getProblemDesc() != null) {
             problemDesc = true;
         }
-        if(ticket.getTitle()!=null)
-        {
+        if (ticket.getTitle() != null) {
             title = true;
         }
-        
+
         String sqlstmt = "update Ticket set ";
-        
-        if(name)
-        {
-            sqlstmt = sqlstmt+"name =:name, ";
+
+        if (name) {
+            sqlstmt = sqlstmt + "name =:name, ";
         }
-        if(address)
-        {
-            sqlstmt = sqlstmt+"address=:address, ";
+        if (address) {
+            sqlstmt = sqlstmt + "address=:address, ";
         }
-        if(title)
-        {
-            sqlstmt = sqlstmt+"title=:title, ";
+        if (title) {
+            sqlstmt = sqlstmt + "title=:title, ";
         }
-        if(category)
-        {
-            sqlstmt = sqlstmt+"category=:category, ";
+        if (category) {
+            sqlstmt = sqlstmt + "category=:category, ";
         }
-        if(phone)
-        {
-            sqlstmt = sqlstmt+"phone=:phone, ";
+        if (phone) {
+            sqlstmt = sqlstmt + "phone=:phone, ";
         }
-        if(problemDesc)
-        {
-            sqlstmt = sqlstmt+"problemDesc=:problemDesc ";
+        if (problemDesc) {
+            sqlstmt = sqlstmt + "problemDesc=:problemDesc ";
         }
-        
+
         sqlstmt = sqlstmt + "where id=:id";
-                
+
         System.out.println(sqlstmt);
         Query q = session.createQuery(sqlstmt);
-        
-        if(name)
-        {
+
+        if (name) {
             q.setParameter("name", ticket.getName());
         }
-        if(address)
-        {
+        if (address) {
             q.setParameter("address", ticket.getAddress());
         }
-        if(title)
-        {
+        if (title) {
             q.setParameter("title", ticket.getTitle());
         }
-        if(category)
-        {
-           q.setParameter("category", ticket.getCategory());
+        if (category) {
+            q.setParameter("category", ticket.getCategory());
         }
-        if(phone)
-        {
+        if (phone) {
             q.setParameter("phone", ticket.getPhone());
         }
-        if(problemDesc)
-        {
+        if (problemDesc) {
             q.setParameter("problemDesc", ticket.getProblemDesc());
         }
-        q.setParameter("id",ticket.getId());
-        System.out.println("Ticket id -> "+ticket.getId());
+        q.setParameter("id", ticket.getId());
+        System.out.println("Ticket id -> " + ticket.getId());
         q.executeUpdate();
-        
+
     }
-    
+
     @Transactional
-    public Ticket getSearchedTicket(long id)
-    {
+    public Ticket getSearchedTicket(long id) {
         Session session = factory.getCurrentSession();
         Ticket ticket = (Ticket) session.get(Ticket.class, id);
         return ticket;
     }
-    
+
     public void setFactory(SessionFactory factory) {
         this.factory = factory;
     }
