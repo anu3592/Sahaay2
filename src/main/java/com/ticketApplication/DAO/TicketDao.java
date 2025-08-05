@@ -136,7 +136,7 @@ public class TicketDao {
         Session session = factory.getCurrentSession();
 
         //Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
-        Query q = session.createNativeQuery(
+        Query q = session.createQuery(
                 "SELECT * FROM Ticket WHERE status = :status AND EXTRACT(EPOCH FROM (now() - created_at)) / 60 > 5",
                 Ticket.class
         );
