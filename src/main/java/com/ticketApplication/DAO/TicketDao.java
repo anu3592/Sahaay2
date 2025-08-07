@@ -138,7 +138,7 @@ public class TicketDao {
         LocalDateTime twoDaysAgo = LocalDateTime.now().minusDays(2);
 
 Query query = session.createQuery(
-    "FROM Ticket WHERE status = :status AND createdAt < :twoDaysAgo", Ticket.class
+    "FROM Ticket WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class
 );
         //Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
 //        Query q = session.createQuery(
