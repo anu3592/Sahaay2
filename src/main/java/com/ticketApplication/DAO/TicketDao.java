@@ -11,6 +11,7 @@ import com.ticketApplication.entity.Users;
 import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,15 +135,22 @@ public class TicketDao {
     @Transactional
     public void escalateTable() {
         Session session = factory.getCurrentSession();
+        LocalDateTime twoDaysAgo = LocalDateTime.now().minusDays(2);
 
+Query query = session.createQuery(
+    "FROM Ticket WHERE status = :status AND createdAt < :twoDaysAgo", Ticket.class
+);
         //Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
-        Query q = session.createQuery(
-                "SELECT t FROM Ticket t WHERE t.status = :status AND now() - t.createdAt > INTERVAL '2 days'",
-                Ticket.class
-        );
-        q.setParameter("status", "pending");
+//        Query q = session.createQuery(
+//                "SELECT t FROM Ticket t WHERE t.status = :status AND now() - t.createdAt > INTERVAL '2 days'",
+//                Ticket.class
+//        );
+        //q.setParameter("status", "pending");
+        
+        query.setParameter("status", "Pending");
+query.setParameter("twoDaysAgo", twoDaysAgo);
 
-        List<Ticket> tickets = q.getResultList();
+        List<Ticket> tickets = query.getResultList();
 
         for (int i = 0; i < tickets.size(); i++) {
             long authorityId = tickets.get(i).getAssigned_to();
