@@ -7,6 +7,7 @@ package com.ticketApplication.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  *
@@ -14,7 +15,7 @@ import jakarta.persistence.Id;
  */
 
 @Entity
-
+@Table(schema = "ticketapplication")
 public class Users {
     @Id
     private long id;

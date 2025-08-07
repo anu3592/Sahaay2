@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  */
 
 @Entity
-@Table(name="escalation_logs")
+@Table(name="escalation_logs", schema = "ticketapplication")
 public class EscalationLogs {
     
     @Id
