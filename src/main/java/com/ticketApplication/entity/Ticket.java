@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  */
 
 @Entity
-@Table(name="tickets", schema = "ticketapplication")
+@Table(name="tickets")
 public class Ticket {
     
     @Id
