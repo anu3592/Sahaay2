@@ -168,6 +168,7 @@ public class HomeController {
     public List<Ticket> sendTickets(@PathVariable("id") long id)
     {
         List<Ticket> tickets = ticketService.getAllTickets(id);
+        System.out.println("List of tickets in view ->" + tickets);
         return tickets;
     }
     
