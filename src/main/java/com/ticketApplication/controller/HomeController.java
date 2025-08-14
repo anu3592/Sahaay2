@@ -167,8 +167,9 @@ public class HomeController {
     @GetMapping("/getTickets/{id}")
     public List<Ticket> sendTickets(@PathVariable("id") long id)
     {
+        System.out.println("List of tickets in view ->");
         List<Ticket> tickets = ticketService.getAllTickets(id);
-        System.out.println("List of tickets in view ->" + tickets);
+        //System.out.println("List of tickets in view ->" + tickets);
         return tickets;
     }
     
