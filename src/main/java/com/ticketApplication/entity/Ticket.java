@@ -64,9 +64,9 @@ public class Ticket {
     
     //
     //@Column(name="image", columnDefinition="LONGBLOB")
-    @Lob
-    @Column(name="image", columnDefinition="BYTEA")
-    @Basic(fetch = FetchType.LAZY)
+//    @Lob
+//    @Column(name="image", columnDefinition="BYTEA")
+//    @Basic(fetch = FetchType.LAZY)
     private String image;
     
     public Ticket() {}
