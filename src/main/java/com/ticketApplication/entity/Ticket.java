@@ -61,11 +61,12 @@ public class Ticket {
     @Column
     private int user_id;
     
-    @Lob
-    //@Basic(fetch = FetchType.EAGER)
+    
+    //
     //@Column(name="image", columnDefinition="LONGBLOB")
+    @Lob
     @Column(name="image", columnDefinition="BYTEA")
-    @JsonIgnore
+    @Basic(fetch = FetchType.LAZY)
     private byte[] image;
     
     public Ticket() {}
