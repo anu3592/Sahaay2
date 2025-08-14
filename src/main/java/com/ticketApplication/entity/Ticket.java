@@ -5,6 +5,7 @@
 package com.ticketApplication.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -61,9 +62,10 @@ public class Ticket {
     private int user_id;
     
     @Lob
-    @Basic(fetch = FetchType.EAGER)
+    //@Basic(fetch = FetchType.EAGER)
     //@Column(name="image", columnDefinition="LONGBLOB")
     @Column(name="image", columnDefinition="BYTEA")
+    @JsonIgnore
     private byte[] image;
     
     public Ticket() {}
