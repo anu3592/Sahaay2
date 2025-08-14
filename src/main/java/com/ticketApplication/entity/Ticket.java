@@ -57,7 +57,8 @@ public class Ticket {
     private int user_id;
     
     @Lob
-    @Column(name="image", columnDefinition="LONGBLOB")
+    //@Column(name="image", columnDefinition="LONGBLOB")
+    @Column(name="image", columnDefinition="BYTEA")
     private byte[] image;
     
     public Ticket() {}
