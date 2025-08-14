@@ -87,7 +87,7 @@ public class TicketDao {
 
         // it is using entity class not table name here
        // Query q = (Query) session.createQuery("from Ticket where user_id= :id");
-       Query q = session.createQuery("SELECT id, name, title, phone, category, address, problemDesc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from Ticket where user_id= :id");
+       Query q = session.createNativeQuery("SELECT id, name, title, phone, category, address, problemDesc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from Ticket where user_id= :id");
         q.setParameter("id", id);
         List<Ticket> tickets = q.getResultList();
         for (Ticket t : tickets) {
