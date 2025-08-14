@@ -86,7 +86,8 @@ public class TicketDao {
         Session session = factory.getCurrentSession();
 
         // it is using entity class not table name here
-        Query q = (Query) session.createQuery("from Ticket where user_id= :id");
+       // Query q = (Query) session.createQuery("from Ticket where user_id= :id");
+       Query q = session.createQuery("SELECT t FROM Ticket t WHERE t.user_id = :id");
         q.setParameter("id", id);
         List<Ticket> tickets = q.getResultList();
         
