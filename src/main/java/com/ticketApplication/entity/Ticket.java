@@ -67,7 +67,7 @@ public class Ticket {
     @Lob
     @Column(name="image", columnDefinition="BYTEA")
     @Basic(fetch = FetchType.LAZY)
-    private byte[] image;
+    private String image;
     
     public Ticket() {}
 
@@ -182,12 +182,12 @@ public class Ticket {
         this.user_id = user_id;
     }
     
-    public byte[] getImage()
+    public String getImage()
     {
         return this.image;
     }
     
-    public void setImage(byte[] image)
+    public void setImage(String image)
     {
         this.image = image;
     }
