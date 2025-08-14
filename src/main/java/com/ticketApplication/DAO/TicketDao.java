@@ -90,7 +90,7 @@ public class TicketDao {
        Query q = session.createQuery("SELECT t FROM Ticket t WHERE t.user_id = :id");
         q.setParameter("id", id);
         List<Ticket> tickets = q.getResultList();
-        
+        System.out.println("Result List for tickets ->"+q.getResultList());
         return tickets;
     }
 
