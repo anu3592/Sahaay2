@@ -24,7 +24,8 @@ public class Ticket {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id = (long)(Math.random()*100000000);
+    //private long id = (long)(Math.random()*100000000);
+    private long id;
     
     @Column
     private String name;
@@ -58,7 +59,7 @@ public class Ticket {
     
     @Lob
     //@Column(name="image", columnDefinition="LONGBLOB")
-    @Column(name="image")
+    @Column(name="image", columnDefinition="BYTEA")
     private byte[] image;
     
     public Ticket() {}
