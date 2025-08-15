@@ -80,7 +80,7 @@ public class HomeController {
         ticket.setProblemDesc(problemDesc);
         ticket.setStatus(status);
         ticket.setUser_id(id);
-        //ticket.setImage(imageFile.getBytes());
+        ticket.setImage(imageFile.getBytes());
         ticketService.createTicket(ticket);
         }
         catch(Exception e)
