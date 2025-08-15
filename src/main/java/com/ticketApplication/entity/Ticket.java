@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 /**
  *
@@ -65,9 +66,9 @@ public class Ticket {
     //
     //@Column(name="image", columnDefinition="LONGBLOB")
 //    @Lob
-//    @Column(name="image", columnDefinition="BYTEA")
+    @Column(name="image")
 //    @Basic(fetch = FetchType.LAZY)
-    private String image;
+    private byte[] image;
     
     public Ticket() {}
 
@@ -184,10 +185,11 @@ public class Ticket {
     
     public String getImage()
     {
-        return this.image;
+        //return this.image;
+        return Base64.getEncoder().encodeToString(this.image);
     }
     
-    public void setImage(String image)
+    public void setImage(byte[] image)
     {
         this.image = image;
     }
