@@ -5,6 +5,7 @@
 package com.ticketApplication.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -155,6 +156,7 @@ public class Ticket {
         this.status = status;
     }
     
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     public OffsetDateTime getCreated_at()
     {
         return this.created_at;
