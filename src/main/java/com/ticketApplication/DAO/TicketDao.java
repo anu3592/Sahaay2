@@ -143,9 +143,9 @@ public class TicketDao {
     public void escalateTable() {
         Session session = factory.getCurrentSession();
         //LocalDateTime twoDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(7);//minusDays(2);
-        OffsetDateTime twoDaysAgo = OffsetDateTime.now().minusMinutes(7);
+        OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(7);
 Query query = session.createQuery(
-    "FROM Ticket WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class
+    "FROM Ticket WHERE status = :status AND created_at >= :twoDaysAgo", Ticket.class
 );
         //Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
 //        Query q = session.createQuery(
