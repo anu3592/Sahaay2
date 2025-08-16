@@ -12,6 +12,7 @@ import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,8 +142,8 @@ public class TicketDao {
     @Transactional
     public void escalateTable() {
         Session session = factory.getCurrentSession();
-        LocalDateTime twoDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(7);//minusDays(2);
-
+        //LocalDateTime twoDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(7);//minusDays(2);
+        OffsetDateTime twoDaysAgo = OffsetDateTime.now().minusMinutes(7);
 Query query = session.createQuery(
     "FROM Ticket WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class
 );
