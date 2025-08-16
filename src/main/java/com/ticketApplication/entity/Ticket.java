@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 
 /**
@@ -54,7 +55,8 @@ public class Ticket {
     private String status;
     
     @Column
-    private LocalDateTime created_at = LocalDateTime.now();
+    //private LocalDateTime created_at = LocalDateTime.now();
+    private OffsetDateTime created_at = OffsetDateTime.now();
     
     @Column
     private long assigned_to;
@@ -153,12 +155,12 @@ public class Ticket {
         this.status = status;
     }
     
-    public LocalDateTime getCreated_at()
+    public OffsetDateTime getCreated_at()
     {
         return this.created_at;
     }
     
-    public void setCreated_at(LocalDateTime created_at)
+    public void setCreated_at(OffsetDateTime created_at)
     {
         this.created_at = created_at;
     }
