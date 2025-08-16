@@ -144,7 +144,7 @@ public class TicketDao {
         Session session = factory.getCurrentSession();
         //LocalDateTime twoDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(7);//minusDays(2);
         OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(7);
-        System.out.println("OffsetDateTime value -> "+twoDaysAgo);
+        
         Query query = session.createNativeQuery("Select id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from tickets WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class);
         // MySQL query -> Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
 //        Query q = session.createQuery(
@@ -154,8 +154,8 @@ public class TicketDao {
         //q.setParameter("status", "pending");
 
         query.setParameter("status", "Pending");
-        query.setParameter("twoDaysAgo", twoDaysAgo);
-
+        query.setParameter("twoDaysAgo", twoDaysAgo);   
+        System.out.println("OffsetDateTime value -> "+twoDaysAgo);
         List<Ticket> tickets = query.getResultList();
         System.out.println("Escalated ticket lists ->" + tickets);
         for (int i = 0; i < tickets.size(); i++) {
