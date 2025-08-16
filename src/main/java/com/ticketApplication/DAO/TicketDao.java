@@ -140,7 +140,7 @@ public class TicketDao {
     @Transactional
     public void escalateTable() {
         Session session = factory.getCurrentSession();
-        LocalDateTime twoDaysAgo = LocalDateTime.now().minusDays(2);
+        LocalDateTime twoDaysAgo = LocalDateTime.now().minusMinutes(7);//minusDays(2);
 
 Query query = session.createQuery(
     "FROM Ticket WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class
