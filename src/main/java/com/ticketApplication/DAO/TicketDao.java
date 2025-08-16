@@ -88,14 +88,14 @@ public class TicketDao {
         Session session = factory.getCurrentSession();
 
         // it is using entity class not table name here
-       // Query q = (Query) session.createQuery("from Ticket where user_id= :id");
-       Query q = session.createNativeQuery("SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from tickets where user_id= :id", Ticket.class);
+        // Query q = (Query) session.createQuery("from Ticket where user_id= :id");
+        Query q = session.createNativeQuery("SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from tickets where user_id= :id", Ticket.class);
         q.setParameter("id", id);
         List<Ticket> tickets = q.getResultList();
         for (Ticket t : tickets) {
-    System.out.println("ID: " + t.getId());
-    System.out.println("Name: " + t.getName());
-}
+            System.out.println("ID: " + t.getId());
+            System.out.println("Name: " + t.getName());
+        }
 
         return tickets;
     }
@@ -144,21 +144,19 @@ public class TicketDao {
         Session session = factory.getCurrentSession();
         //LocalDateTime twoDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(7);//minusDays(2);
         OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(7);
-Query query = session.createQuery(
-    "FROM Ticket WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class
-);
+        Query query = session.createNativeQuery("Select * from tickets WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class);
         // MySQL query -> Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
 //        Query q = session.createQuery(
 //                "SELECT t FROM Ticket t WHERE t.status = :status AND now() - t.createdAt > INTERVAL '2 days'",
 //                Ticket.class
 //        );
         //q.setParameter("status", "pending");
-        
+
         query.setParameter("status", "Pending");
-query.setParameter("twoDaysAgo", twoDaysAgo);
+        query.setParameter("twoDaysAgo", twoDaysAgo);
 
         List<Ticket> tickets = query.getResultList();
-        System.out.println("Escalated ticket lists ->"+tickets);
+        System.out.println("Escalated ticket lists ->" + tickets);
         for (int i = 0; i < tickets.size(); i++) {
             long authorityId = tickets.get(i).getAssigned_to();
 
