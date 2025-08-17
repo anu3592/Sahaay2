@@ -55,7 +55,7 @@ public class Ticket {
     @Column
     private String status;
     
-    @Column
+    @Column(name = "created_at", columnDefinition = "TIMESTAMPTZ")
     //private LocalDateTime created_at = LocalDateTime.now();
     private OffsetDateTime created_at = OffsetDateTime.now();
     

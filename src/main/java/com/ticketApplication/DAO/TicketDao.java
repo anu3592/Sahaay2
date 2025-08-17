@@ -9,6 +9,7 @@ import com.ticketApplication.entity.EscalationLogs;
 import com.ticketApplication.entity.Ticket;
 import com.ticketApplication.entity.Users;
 import jakarta.persistence.Query;
+import jakarta.persistence.TemporalType;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -143,7 +144,7 @@ public class TicketDao {
     public void escalateTable() {
         Session session = factory.getCurrentSession();
         //LocalDateTime twoDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(7);//minusDays(2);
-        OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).withNano(0).minusMinutes(7);
+        OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(7).withNano(0);
         
         Query query = session.createNativeQuery("Select id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from tickets WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class);
         // MySQL query -> Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
