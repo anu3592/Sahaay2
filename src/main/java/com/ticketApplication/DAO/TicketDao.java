@@ -12,6 +12,7 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TemporalType;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -146,17 +147,23 @@ public class TicketDao {
         //LocalDateTime twoDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(7);//minusDays(2);
         OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(7).withNano(0);
 
-        
-        Query query = session.createNativeQuery("Select id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from tickets WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class);
+        Query query = session.createNativeQuery(
+                "SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image "
+                + "FROM tickets "
+                + "WHERE status = :status AND created_at < CAST(:twoDaysAgo AS timestamptz)",
+                Ticket.class
+        );
+
+        //Query query = session.createNativeQuery("Select id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from tickets WHERE status = :status AND created_at < :twoDaysAgo", Ticket.class);
         // MySQL query -> Query q = session.createQuery("from Ticket where status = :status and TIMESTAMPDIFF(DAY, created_at, NOW()) > 2");
 //        Query q = session.createQuery(
 //                "SELECT t FROM Ticket t WHERE t.status = :status AND now() - t.createdAt > INTERVAL '2 days'",
 //                Ticket.class
 //        );
         //q.setParameter("status", "pending");
-
         query.setParameter("status", "Pending");
-        query.setParameter("twoDaysAgo", twoDaysAgo.toString());
+        //query.setParameter("twoDaysAgo", twoDaysAgo);
+        query.setParameter("twoDaysAgo", Timestamp.from(twoDaysAgo.toInstant()));
         System.out.println("OffsetDateTime value -> " + twoDaysAgo);
         List<Ticket> tickets = query.getResultList();
         System.out.println("Escalated ticket lists ->" + tickets);
