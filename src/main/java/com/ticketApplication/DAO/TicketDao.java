@@ -163,7 +163,7 @@ public class TicketDao {
         //q.setParameter("status", "pending");
         query.setParameter("status", "Pending");
         //query.setParameter("twoDaysAgo", twoDaysAgo);
-        query.setParameter("twoDaysAgo", Timestamp.from(twoDaysAgo.toInstant()));
+        query.setParameter("twoDaysAgo", twoDaysAgo.toInstant().toString());
         System.out.println("OffsetDateTime value -> " + Timestamp.from(twoDaysAgo.toInstant()));
         List<Ticket> tickets = query.getResultList();
         System.out.println("Escalated ticket lists ->" + tickets);
