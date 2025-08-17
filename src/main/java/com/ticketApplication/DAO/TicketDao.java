@@ -150,7 +150,7 @@ public class TicketDao {
         Query query = session.createNativeQuery(
                 "SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image "
                 + "FROM tickets "
-                + "WHERE status = :status AND (created_at AT TIME ZONE 'UTC') < :twoDaysAgo",
+                + "WHERE status = :status AND created_at < (:twoDaysAgo AT TIME ZONE 'UTC')",
                 Ticket.class
         );
 
