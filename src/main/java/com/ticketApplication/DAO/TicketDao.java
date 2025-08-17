@@ -148,7 +148,7 @@ public class TicketDao {
         OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(7).withNano(0);
 
         Query query = session.createNativeQuery(
-                "SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image "
+                "select id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image "
                 + "FROM tickets "
                 + "WHERE status = :status AND created_at < CAST(:twoDaysAgo AS timestamptz)",
                 Ticket.class
