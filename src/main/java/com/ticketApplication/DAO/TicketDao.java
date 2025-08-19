@@ -161,7 +161,7 @@ public class TicketDao {
 //                Ticket.class
 //        );
         //q.setParameter("status", "pending");
-        query.setParameter("status", "Pending");
+        query.setParameter("status", "pending");
         //query.setParameter("twoDaysAgo", twoDaysAgo);
         Timestamp ts = Timestamp.from(twoDaysAgo.toInstant());
         query.setParameter("twoDaysAgo", ts);
