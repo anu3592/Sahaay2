@@ -145,7 +145,7 @@ public class TicketDao {
     public void escalateTable() {
         Session session = factory.getCurrentSession();
         //LocalDateTime twoDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(7);//minusDays(2);
-        OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(7).withNano(0);
+        OffsetDateTime twoDaysAgo = OffsetDateTime.now(ZoneOffset.UTC).minusDays(2).withNano(0);
 
         Query query = session.createNativeQuery(
                 "SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image "
