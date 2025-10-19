@@ -91,7 +91,7 @@ public class TicketDao {
 
         // it is using entity class not table name here
         // Query q = (Query) session.createQuery("from Ticket where user_id= :id");
-        Query q = session.createNativeQuery("SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from tickets where user_id= :id", Ticket.class);
+        Query q = session.createNativeQuery("SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image from ticketapplication.tickets where user_id= :id", Ticket.class);
         q.setParameter("id", id);
         List<Ticket> tickets = q.getResultList();
         for (Ticket t : tickets) {
@@ -149,7 +149,7 @@ public class TicketDao {
 
         Query query = session.createNativeQuery(
                 "SELECT id, name, title, phone, category, address, problem_desc, status, created_at, assigned_to, user_id, encode(image, 'base64') as image "
-                + "FROM tickets "
+                + "FROM ticketapplication.tickets "
                 + "WHERE status = :status AND created_at < :twoDaysAgo",
                 Ticket.class
         );
