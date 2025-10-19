@@ -39,9 +39,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this 
     
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="ds">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://dpg-d25dpis9c44c73d7jh5g-a:5432/ticketapplication?user=ticketapplication_user&amp;password=hIEpXefXBWis5IguwKCyMKHR99W9iu2a"/>
+        <!--<property name="url" value="jdbc:postgresql://dpg-d25dpis9c44c73d7jh5g-a:5432/ticketapplication?user=ticketapplication_user&amp;password=hIEpXefXBWis5IguwKCyMKHR99W9iu2a"/>
         <property name="username" value="ticketapplication_user"/>
-        <property name="password" value="hIEpXefXBWis5IguwKCyMKHR99W9iu2a" />
+        <property name="password" value="hIEpXefXBWis5IguwKCyMKHR99W9iu2a" />-->
+        <property name="url" value="jdbc:postgresql://ep-solitary-shadow-adcllvip-pooler.c-2.us-east-1.aws.neon.tech/neondb?currentSchema=ticketapplication"/>
+        <property name="username" value="neondb_owner"/>
+        <property name="password" value="npg_l4cMZnIVxtd3" />
     </bean>
     
     <bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" name="sessionFactory">
