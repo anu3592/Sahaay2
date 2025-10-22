@@ -383,6 +383,7 @@ public class TicketDao {
     public Ticket getSearchedTicket(long id) {
         Session session = factory.getCurrentSession();
         Ticket ticket = (Ticket) session.get(Ticket.class, id);
+        System.out.println("Searched ticket -> "+ticket);
         return ticket;
     }
 

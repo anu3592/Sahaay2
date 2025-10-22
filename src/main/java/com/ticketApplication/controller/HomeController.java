@@ -233,6 +233,7 @@ public class HomeController {
     @GetMapping("/search/{ticketId}")
     public Ticket getSearchedTicket(@PathVariable("ticketId") long id)
     {
+        System.out.println("In getSearchedTicket Searched ticket is -> "+ticketService.getSearchedTicket(id));
         return ticketService.getSearchedTicket(id);
     }
     
